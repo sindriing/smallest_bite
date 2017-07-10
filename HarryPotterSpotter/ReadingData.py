@@ -2,7 +2,6 @@ import pandas as pd
 import re
 
 with open('D:/Forritun/Sumar_ML/smallest_bite/HP1.txt') as FirstBook:
-    booktext = FirstBook.read().replace('\n', '')
+    booktext = FirstBook.read().replace('\n', '').replace('s ', ' ').replace('es ', ' ').replace('ing ', ' ')
 
 print(booktext)
-
