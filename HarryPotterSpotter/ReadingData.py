@@ -1,19 +1,22 @@
 import pandas as pd
 import re
 """Word processing Zone"""
-with open('HP1.txt') as FirstBook:
-    booktext = (FirstBook.read()
-                .replace('\n', '')
-                .replace(',', ' ')
-                .replace('.', ' SPLIT')
-                .replace('s ', ' ')
-                .replace('es ', ' ')
-                .replace('ing ', ' ')
-                .replace('-', ' ')
-                .replace('—', ' '))
-    booktext = re.sub('\d+', 'NUMBER', booktext)
-    booktext = booktext.replace('Page | NUMBER Harry Potter and the Philosopher Stone   J SPLITK SPLIT Rowl', '')
-print(booktext)
+def read_book(book):
+    with open(book) as TheBook:
+        booktext = (TheBook.read()
+                    .replace('\n', '')
+                    .replace(',', ' ')
+                    .replace('.', ' SPLIT')
+                    .replace('s ', ' ')
+                    .replace('es ', ' ')
+                    .replace('ing ', ' ')
+                    .replace('-', ' ')
+                    .replace('—', ' '))
+        booktext = re.sub('\d+', 'NUMBER', booktext)
+        booktext = booktext.replace('Page | NUMBER Harry Potter and the Philosopher Stone   J SPLITK SPLIT Rowl', '')
+        return booktext
+textFiles = ('HP1.txt', 'HP2.txt')
+booktext = read_book(textFiles[0])
 
 """Get Data Zone"""
 Sentences = booktext.replace('!', ' SPLIT').replace('?', ' SPLIT').split('SPLIT')
