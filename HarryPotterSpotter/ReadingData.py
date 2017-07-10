@@ -1,10 +1,15 @@
 import pandas as pd
 import re
-
+"""Word processing Zone"""
 with open('D:/Forritun/Sumar_ML/smallest_bite/HP1.txt') as FirstBook:
     booktext = FirstBook.read().replace('\n', '').replace('s ', ' ').replace('es ', ' ').replace('ing ', ' ')
 
-Sentences = booktext.replace('!', '.').replace('?', '.').split('.')
-#SentenceList = pd.DataFrame(Sentences)
 
-print(booktext)
+
+"""Get Data Zone"""
+Sentences = booktext.replace('!', '.').replace('?', '.').split('.')
+SentencesDF = pd.DataFrame(Sentences)
+SentencesDF.columns = ['Sentences']
+SentencesDF = SentencesDF[SentencesDF['Sentences'].str.split(' ').map(len) > 6].reset_index().drop('index', axis = 1)
+
+print(SentencesDF)
