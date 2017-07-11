@@ -15,9 +15,11 @@ def read_book(book):
                     .replace('—', ' ')
                     .replace('“', '')
                     .replace('”', '')
-                    .replace('"', ''))
+                    .replace('"', '')
+                    .replace('   ', ' ')
+                    .replace('  ', ' '))
         booktext = re.sub('\d+', 'NUMBER', booktext)
-        booktext = booktext.replace('Page | NUMBER Harry Potter and the Philosopher Stone   J SPLITK SPLIT Rowl', '')
+        booktext = booktext.replace('Page | NUMBER Harry Potter and the Philosopher Stone J SPLITK SPLIT Rowl', '')
         return booktext
 
 """Takes the string text of a book and splits it into sentences longer than 5 words and returns them in a DataFrame"""
