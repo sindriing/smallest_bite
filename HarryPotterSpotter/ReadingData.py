@@ -26,7 +26,7 @@ def create_sentences(booktext, title):
     SentencesDF = pd.DataFrame(Sentences)
     SentencesDF.columns = ['Sentences']
     SentencesDF = SentencesDF[SentencesDF['Sentences'].str.split(' ').map(len) > 6].reset_index().drop('index', axis=1)
-    SentencesDF['Title'] = title
+    SentencesDF['Title'] = title.split('.')[0]
     return SentencesDF
 
 textFiles = ('HP1.txt', 'Dracula.txt')
@@ -34,6 +34,5 @@ df = pd.DataFrame(columns = ['Sentences', 'Title'])
 for book in textFiles:
     booktext = read_book(book)
     tempdf = create_sentences(booktext, book)
-    print(tempdf)
     df = df.append(tempdf)
 print(df)
