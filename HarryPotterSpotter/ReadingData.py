@@ -1,5 +1,6 @@
 import pandas as pd
 import re
+from collections import Counter
 
 """reads a book from a txt file into a string and simplifies the text"""
 def read_book(book):
@@ -40,6 +41,11 @@ def is_harry_potter(df):
     df['Harry Potter'] = df['Title'].str.slice(0, 2) == 'HP'
     return df
 
+def get_most_common_words_list(text):
+    words = text.replace('?', '').replace('!', '').replace('SPLIT', '').split()
+    wordCount = Counter(words)
+    return wordCount
+
 textFiles = ('HP1.txt', 'Dracula.txt')
 df = pd.DataFrame(columns = ['Sentences', 'Title'])
 for book in textFiles:
@@ -48,4 +54,6 @@ for book in textFiles:
     df = df.append(tempdf)
 hpDF = is_harry_potter(df)
 hpDF.to_csv('HP_Dataframe.csv')
+wordcount = get_most_common_words_list(booktext)
+print(wordcount)
 #print(df)
