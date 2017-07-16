@@ -48,12 +48,14 @@ def get_most_common_words_list(text):
 
 textFiles = ('HP1.txt', 'Dracula.txt')
 df = pd.DataFrame(columns = ['Sentences', 'Title'])
+totaltext = ''
 for book in textFiles:
     booktext = read_book(book)
+    totaltext += booktext
     tempdf = create_sentences(booktext, book)
     df = df.append(tempdf)
 hpDF = is_harry_potter(df)
 hpDF.to_csv('HP_Dataframe.csv')
-wordcount = get_most_common_words_list(booktext)
+wordcount = get_most_common_words_list(totaltext)
 print(wordcount)
 #print(df)
