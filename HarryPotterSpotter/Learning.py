@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 from sklearn.model_selection import train_test_split
 
 def split_into_words(df):
@@ -13,11 +14,20 @@ def get_n_most_common_words(count):
 
 def get_data():
     df = pd.read_csv('HP_Dataframe.csv', index_col='Unnamed: 0', encoding = "ISO-8859-1")
-    X = df['Sentences']
-    y = df['Harry Potter']
-    X_train, X_test, y_train, y_test = train_test_split(X, y, random_state = 0)
+    #X = df['Sentences']
+    #y = df['Harry Potter']
+    #X_train, X_test, y_train, y_test = train_test_split(X, y, random_state = 0)
     word_df = split_into_words(df)
-    print(word_df)
+    return word_df
 
-features = get_n_most_common_words(500)['Word'].reset_index().drop('index', axis=1)
-print(features)
+featuresWordMap = get_n_most_common_words(600)['Word'].reset_index().drop('index', axis=1)
+
+print(featuresWordMap)
+wordDF = get_data()
+features = np.zeros(shape=(1,len(featuresWordMap)))
+temp = wordDF.iloc[100]
+
+feature = featuresWordMap.isin(temp)
+print(bla)
+#print(features)
+# print(temp)

@@ -26,7 +26,8 @@ def read_book(book):
                     .replace('"', '')
                     .replace('   ', ' ')
                     .replace('  ', ' ')
-                    .replace('’', ''))
+                    .replace('’', '')
+                    .replace('\'', ''))
         return (booktext)
 
 """Takes the string text of a book and splits it into sentences longer than 5 words and returns them in a DataFrame"""
@@ -47,7 +48,7 @@ def get_most_common_words_list(text):
     wordCount = Counter(words)
     return wordCount
 
-textFiles = ('HP1.txt', 'HP2.txt', 'Dracula.txt')
+textFiles = ('HP1.txt', 'HP2.txt', 'HP3.txt', 'Dracula.txt', 'LOTR1.txt')
 df = pd.DataFrame(columns = ['Sentences', 'Title'])
 totaltext = ''
 for book in textFiles:
