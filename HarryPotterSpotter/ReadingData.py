@@ -6,18 +6,19 @@ from collections import Counter
 def read_book(book):
     with open(book) as TheBook:
         original = TheBook.read()
-        booktext = (re.sub('\d+', 'NUMBER', original)
-                    .replace('J.K. Rowling', '')
-                    .replace('Page | NUMBER Harry Potter and the Philosophers Stone', '' )
+        booktext = re.sub(r'Page |.+Rowling','',original)
+        booktext = (re.sub('\d+', 'NUMBER', booktext)
+                    #.replace('J.K. Rowling', '')
+                    #.replace('Page | NUMBER Harry Potter and the Philosophers Stone', '' )
                     .lower()
                     .replace('\n', '')
-                    .replace('mr.', ' ')
+                    .replace('mr.', 'mr')
                     .replace('ms.', 'ms')
                     .replace(',', ' ')
                     .replace('.', ' SPLIT')
                     .replace('s ', ' ')
                     .replace('es ', ' ')
-                    .replace('ing ', ' ')
+                    #.replace('ing ', ' ')
                     .replace('-', ' ')
                     .replace('—', ' ')
                     .replace('“', '')
@@ -46,7 +47,7 @@ def get_most_common_words_list(text):
     wordCount = Counter(words)
     return wordCount
 
-textFiles = ('HP1.txt', 'Dracula.txt')
+textFiles = ('HP1.txt', 'HP2.txt', 'Dracula.txt')
 df = pd.DataFrame(columns = ['Sentences', 'Title'])
 totaltext = ''
 for book in textFiles:
@@ -56,6 +57,10 @@ for book in textFiles:
     df = df.append(tempdf)
 hpDF = is_harry_potter(df)
 hpDF.to_csv('HP_Dataframe.csv')
+
 wordcount = get_most_common_words_list(totaltext)
-print(wordcount)
+wordcount = pd.DataFrame(list(wordcount.items()), columns=['Word', 'Count']).set_index('Word')
+wordcount = wordcount[wordcount.values > 4]
+wordcount.to_csv('word_counts.csv')
+#print(wordcount)
 #print(df)
