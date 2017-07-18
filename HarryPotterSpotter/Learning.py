@@ -8,8 +8,7 @@ def split_into_words(df):
 
 def get_n_most_common_words(count):
     words = (pd.read_csv('word_counts.csv', encoding = "ISO-8859-1")
-             .nlargest(n=count, columns=['Count'], keep = 'first'))
-    print(len(words))
+             .sort_values('Count', ascending=False).iloc[:count])
     return words
 
 def get_data():
@@ -17,17 +16,20 @@ def get_data():
     #X = df['Sentences']
     #y = df['Harry Potter']
     #X_train, X_test, y_train, y_test = train_test_split(X, y, random_state = 0)
+    return df
+
+def get_features(fromPos, endPos):
+    df = get_data()
     word_df = split_into_words(df)
-    return word_df
 
-featuresWordMap = get_n_most_common_words(600)['Word'].reset_index().drop('index', axis=1)
+    commonWords = get_n_most_common_words(200)['Word'].reset_index().drop('index', axis=1)
+    features = pd.DataFrame()
+    for wordlist in word_df.iloc[fromPos:endPos]:
+        features = features.append(commonWords.isin(wordlist).transpose(), ignore_index=True)
 
-print(featuresWordMap)
-wordDF = get_data()
-features = np.zeros(shape=(1,len(featuresWordMap)))
-temp = wordDF.iloc[100]
+    features.columns = [commonWords['Word']]
+    return (features, df['Harry Potter'].iloc[fromPos:endPos])
 
-feature = featuresWordMap.isin(temp)
-print(bla)
-#print(features)
-# print(temp)
+X, y = get_features(17925, 18000)
+print(X)
+print(y)
