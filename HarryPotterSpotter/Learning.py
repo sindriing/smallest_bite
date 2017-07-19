@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
+from sklearn.svm import SVC
 
 def split_into_words(df):
     word_df = df['Sentences'].apply(str.split)
@@ -13,9 +14,6 @@ def get_n_most_common_words(count):
 
 def get_data():
     df = pd.read_csv('HP_Dataframe.csv', index_col='Unnamed: 0', encoding = "ISO-8859-1")
-    #X = df['Sentences']
-    #y = df['Harry Potter']
-    #X_train, X_test, y_train, y_test = train_test_split(X, y, random_state = 0)
     return df
 
 def get_features(wordCount):
@@ -33,5 +31,10 @@ def get_features(wordCount):
     return (features, df['Harry Potter'].values.astype(int).transpose(), commonWords)
 
 X, y, wordDict = get_features(200)
-print(X.shape)
-print(y.shape)
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state = 0)
+this_C = 1.0
+clf = SVC(kernel='linear', C=this_C).fit(X_train, y_train)
+print('Score on training set is: {:.2f}'.format(clf.score(X_train, y_train)))
+print('Score on test set is: {:.2f}'.format(clf.score(X_test, y_test)))
+print('Halelujah!!!')
