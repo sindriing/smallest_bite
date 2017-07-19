@@ -18,18 +18,20 @@ def get_data():
     #X_train, X_test, y_train, y_test = train_test_split(X, y, random_state = 0)
     return df
 
-def get_features(fromPos, endPos):
+def get_features(wordCount):
     df = get_data()
     word_df = split_into_words(df)
 
-    commonWords = get_n_most_common_words(200)['Word'].reset_index().drop('index', axis=1)
-    features = pd.DataFrame()
-    for wordlist in word_df.iloc[fromPos:endPos]:
-        features = features.append(commonWords.isin(wordlist).transpose(), ignore_index=True)
+    commonWords = get_n_most_common_words(wordCount)['Word'].reset_index().drop('index', axis=1)
+    features = np.zeros((len(word_df), wordCount))
 
-    features.columns = [commonWords['Word']]
-    return (features, df['Harry Potter'].iloc[fromPos:endPos])
+    counter=0
+    for wordlist in word_df:
+        features[counter] = commonWords.isin(wordlist).values.transpose()[0]
+        counter+=1
 
-X, y = get_features(17925, 18000)
-print(X)
-print(y)
+    return (features, df['Harry Potter'].values.astype(int).transpose(), commonWords)
+
+X, y, wordDict = get_features(200)
+print(X.shape)
+print(y.shape)
