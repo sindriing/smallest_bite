@@ -2,6 +2,8 @@ import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
+from sklearn.externals import joblib
+
 
 def split_into_words(df):
     word_df = df['Sentences'].apply(str.split)
@@ -30,7 +32,7 @@ def get_features(wordCount):
 
     return (features, df['Harry Potter'].values.astype(int).transpose(), commonWords)
 
-X, y, wordDict = get_features(200)
+X, y, wordDict = get_features(2000)
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, random_state = 0)
 this_C = 1.0
@@ -38,3 +40,8 @@ clf = SVC(kernel='linear', C=this_C).fit(X_train, y_train)
 print('Score on training set is: {:.2f}'.format(clf.score(X_train, y_train)))
 print('Score on test set is: {:.2f}'.format(clf.score(X_test, y_test)))
 print('Halelujah!!!')
+
+print('Word dict: {}'.format(wordDict))
+print('X: {}'.format(X))
+print('y: {}'.format(y))
+joblib.dump(clf, 'theSpotter.pkl') 
